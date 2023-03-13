@@ -1,27 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table, Button, Form, Modal } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
+import {EditModal} from './EditModal';
+import {DetailsModal} from './DetailsModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 const PostsTable = () => {
     const URL = "http://localhost:3004/posts";
 
+    const getPosts = async () => {
+        try {
+            const res = await axios.get(URL);
+            setPosts(res.data);
+        } catch (err) {
+            Swal.fire(
+                '¡Ups!',
+                'Algo salió mal',
+                'error'
+            )
+        }
+    }
+
+    useEffect(() => {
+        getPosts()
+    }, [])
+
     // Estado para guardar y modificar los Posts
     const [posts, setPosts] = useState([]);
-    // Estado para ocultar o mostrar el Modal
-    const [showModal, setShowModal] = useState(false);
+    // Estado para ocultar o mostrar el EditModal
+    const [showEditModal, setShowEditModal] = useState(false);
+    // Estado para ocultar o mostrar el DetailsModal
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
     // Estado para guardar la informacion del Post seleccionado
     const [dataModal, setDataModal] = useState(null);
 
-    const handleCloseModal = () => setShowModal(false);
-    const handleShowModal = () => setShowModal(true);
+    const handleCloseEditModal = () => setShowEditModal(false);
+    const handleShowEditModal = () => setShowEditModal(true);
+
+    const handleCloseDetailsModal = () => setShowDetailsModal(false);
+    const handleShowDetailsModal = () => setShowDetailsModal(true);
 
     const handleChangeModal = ({target}) => {
-        console.log(target)
         setDataModal({
             ...dataModal,
             [target.name]: target.value
         })
+    }
+
+    // Función de mostrar detalles de un post, esta muestra la informacion del estado con los datos del post seleccionado y se abre el DetailsModal
+    const handleDetails = (post) => {
+        setDataModal(post);
+        handleShowDetailsModal();
+    }
+
+    // Función de editar post, esta actualiza la informacion del estado con los datos del post seleccionado y se abre el EditModal
+    const handleEdit = (post) => {
+        setDataModal(post);
+        handleShowEditModal();
     }
 
     // Una vez abierto el Modal, cuando se da en "guardar" se hace la peticion put a la API y se actualiza 
@@ -44,7 +79,7 @@ const PostsTable = () => {
             }
             return post;
           }));
-          handleCloseModal();
+          handleCloseEditModal();
         } else {
           Swal.fire(
             'Error!',
@@ -53,24 +88,6 @@ const PostsTable = () => {
           );
         }
       };
-      
-
-    const getPosts = async () => {
-        try {
-            const res = await axios.get(URL);
-            setPosts(res.data);
-        } catch (err) {
-            Swal.fire(
-                '¡Ups!',
-                'Algo salió mal',
-                'error'
-            )
-        }
-    }
-
-    useEffect(() => {
-        getPosts()
-    }, [])
 
     // Función de eliminar POST, esta reacciona al evento de click del botón eliminar
     const handleDelete = async (post) => {
@@ -107,13 +124,6 @@ const PostsTable = () => {
         })
     }
 
-    // Función de editar POST, esta actualiza la informacion del estado con los datos del post seleccionado y se abre el Modal
-    const handleEdit = (post) => {
-        setDataModal(post);
-        handleShowModal();
-        console.log(post)
-    }
-
     return (
         <Container>
             <Table striped bordered hover size="sm" responsive>
@@ -130,7 +140,7 @@ const PostsTable = () => {
                             <td className="text-center align-middle">{post.id}</td>
                             <td className="text-center align-middle title">{post.title}</td>
                             <td className="text-center align-middle">
-                                <button className='btn btn-info'>Detalles</button>
+                                <button className='btn btn-info' onClick={() => handleDetails(post)}>Detalles</button>
                             </td>
                             <td className="text-center align-middle">
                                 <button className='btn btn-warning' onClick={() => handleEdit(post)}>Editar</button>
@@ -142,45 +152,18 @@ const PostsTable = () => {
                     ))}
                 </tbody>
             </Table>
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Editar Post</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleSubmitEdit}>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Titulo</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name='title'
-                                value={dataModal ? dataModal.title : ''}
-                                autoFocus
-                                onChange={handleChangeModal}
-                                required
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                            <Form.Label>Contenido</Form.Label>
-                            <Form.Control 
-                                as="textarea"
-                                name='body'
-                                rows={3}
-                                value={dataModal ? dataModal.body : ''}
-                                onChange={handleChangeModal}
-                                required
-                            />
-                        </Form.Group>
-                        <Modal.Footer>
-                            <Button variant="btn btn-secondary" type='button' onClick={handleCloseModal}>
-                                Cacelar
-                            </Button>
-                            <Button variant="btn btn-success" type='submit' onClick={handleCloseModal}>
-                                Guardar
-                            </Button>
-                        </Modal.Footer>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+            <EditModal 
+                showEditModal={showEditModal} 
+                handleCloseEditModal={handleCloseEditModal} 
+                handleSubmitEdit={handleSubmitEdit} 
+                handleChangeModal={handleChangeModal} 
+                dataModal={dataModal} 
+            />
+            <DetailsModal
+                showDetailsModal={showDetailsModal} 
+                handleCloseDetailsModal={handleCloseDetailsModal}
+                dataModal={dataModal}
+            />
         </Container>
     );
 }

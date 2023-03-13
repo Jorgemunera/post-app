@@ -8,15 +8,27 @@
     },
     {
       "userId": "1",
-      "title": "ssss",
-      "body": "ssssss",
-      "id": 15
-    },
-    {
-      "userId": "1",
       "title": "pantalon",
       "body": "rojo",
       "id": 16
+    },
+    {
+      "userId": "2",
+      "title": "nuevo post",
+      "body": "yeah si",
+      "id": 17
+    },
+    {
+      "userId": "2",
+      "title": "patatota",
+      "body": "conejo",
+      "id": 18
+    },
+    {
+      "userId": "1",
+      "title": "titulo",
+      "body": "contenido",
+      "id": 19
     }
   ]
 }

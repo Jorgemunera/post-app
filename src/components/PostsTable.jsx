@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Pagination } from 'react-bootstrap';
-import {EditModal} from './EditModal';
-import {DetailsModal} from './DetailsModal';
+import { EditModal } from './EditModal';
+import { DetailsModal } from './DetailsModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -18,14 +18,17 @@ const PostsTable = () => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     // Estado para guardar la informacion del Post seleccionado
     const [dataModal, setDataModal] = useState(null);
+    // Estado para manejar los terminos de busqueda
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Estado para detectar la pagina activa y funcion handle para detectar cuando la pagina cambia
     const [activePage, setActivePage] = useState(1);
-    const handlePageChange = (pageNumber) => {
-        setActivePage(pageNumber);
-    };
-    
-    const paginatedPosts = posts.slice((activePage - 1) * pageSize, activePage * pageSize);
+
+    const filteredPosts = posts.filter(post =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const paginatedPosts = filteredPosts.slice((activePage - 1) * pageSize, activePage * pageSize);
 
     const handleCloseEditModal = () => setShowEditModal(false);
     const handleShowEditModal = () => setShowEditModal(true);
@@ -33,7 +36,7 @@ const PostsTable = () => {
     const handleCloseDetailsModal = () => setShowDetailsModal(false);
     const handleShowDetailsModal = () => setShowDetailsModal(true);
 
-    const handleChangeModal = ({target}) => {
+    const handleChangeModal = ({ target }) => {
         setDataModal({
             ...dataModal,
             [target.name]: target.value
@@ -57,30 +60,30 @@ const PostsTable = () => {
         e.preventDefault();
         const res = await axios.patch(`${URL}/${dataModal.id}`, dataModal);
         if (res.status === 200) {
-          Swal.fire(
-            'Guardado!',
-            `El post ${res.data.title} ha sido actualizado exitosamente!`,
-            'success'
-          );
-          // Buscar el post en el estado `posts` y actualizarlo
-          setPosts(posts.map(post => {
-            if (post.id === dataModal.id) {
-              return {
-                ...post,
-                ...dataModal
-              };
-            }
-            return post;
-          }));
-          handleCloseEditModal();
+            Swal.fire(
+                'Guardado!',
+                `El post ${res.data.title} ha sido actualizado exitosamente!`,
+                'success'
+            );
+            // Buscar el post en el estado `posts` y actualizarlo
+            setPosts(posts.map(post => {
+                if (post.id === dataModal.id) {
+                    return {
+                        ...post,
+                        ...dataModal
+                    };
+                }
+                return post;
+            }));
+            handleCloseEditModal();
         } else {
-          Swal.fire(
-            'Error!',
-            'Hubo un problema al actualizar el post!',
-            'error'
-          );
+            Swal.fire(
+                'Error!',
+                'Hubo un problema al actualizar el post!',
+                'error'
+            );
         }
-      };
+    };
 
     // Función de eliminar POST, esta reacciona al evento de click del botón eliminar
     const handleDelete = async (post) => {
@@ -117,6 +120,10 @@ const PostsTable = () => {
         })
     }
 
+    useEffect(() => {
+        setActivePage(1);
+    }, [searchTerm]);
+
     const getPosts = async () => {
         try {
             const res = await axios.get(URL);
@@ -136,6 +143,8 @@ const PostsTable = () => {
 
     return (
         <Container>
+            <input type="text" placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+
             <Table striped bordered hover size="sm" responsive>
                 <thead>
                     <tr>
@@ -145,49 +154,74 @@ const PostsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {paginatedPosts.map((post) => (
-                    <tr key={post.id}>
-                        <td className="text-center align-middle">{post.id}</td>
-                        <td className="text-center align-middle title">{post.title}</td>
-                        <td className="text-center align-middle">
-                            <button className="btn btn-info" onClick={() => handleDetails(post)}>Detalles</button>
-                        </td>
-                        <td className="text-center align-middle">
-                            <button className="btn btn-warning" onClick={() => handleEdit(post)}>Editar</button>
-                        </td>
-                        <td className="text-center align-middle">
-                            <button className="btn btn-danger" onClick={() => handleDelete(post)}>Eliminar</button>
-                        </td>
-                    </tr>
-                ))}
+                    {paginatedPosts.map(post => (
+                        <tr key={post.id}>
+                            <td className="text-center align-middle">{post.id}</td>
+                            <td className="text-center align-middle">{post.title}</td>
+                            <td className="text-center align-middle">
+                                <button
+                                    className="btn btn-secondary btn-sm"
+                                    onClick={() => handleDetails(post)}
+                                >
+                                    Detalles
+                                </button>
+                            </td>
+                            <td className="text-center align-middle">
+                                <button
+                                    className="btn btn-primary btn-sm"
+                                    onClick={() => handleEdit(post)}
+                                >
+                                    Editar
+                                </button>
+                            </td>
+                            <td className="text-center align-middle">
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => handleDelete(post)}
+                                >
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
-            <Pagination
-                className="justify-content-center"
-                size="sm"
-                onClick={(event) =>
-                handlePageChange(parseInt(event.target.text, 10))
-                }
-            >
-                {[...Array(Math.ceil(posts.length / pageSize))].map((_, index) => (
-                <Pagination.Item
-                    key={index}
-                    active={index + 1 === activePage}
-                    activeLabel=""
-                >
-                    {index + 1}
-                </Pagination.Item>
+            <Pagination className="mt-4 justify-content-center">
+                <Pagination.First
+                    onClick={() => setActivePage(1)}
+                    disabled={activePage === 1}
+                />
+                <Pagination.Prev
+                    onClick={() => setActivePage(activePage - 1)}
+                    disabled={activePage === 1}
+                />
+                {[...Array(Math.ceil(filteredPosts.length / pageSize))].map((_, i) => (
+                    <Pagination.Item
+                        key={i + 1}
+                        active={i + 1 === activePage}
+                        onClick={() => setActivePage(i + 1)}
+                    >
+                        {i + 1}
+                    </Pagination.Item>
                 ))}
+                <Pagination.Next
+                    onClick={() => setActivePage(activePage + 1)}
+                    disabled={activePage === Math.ceil(filteredPosts.length / pageSize)}
+                />
+                <Pagination.Last
+                    onClick={() => setActivePage(Math.ceil(filteredPosts.length / pageSize))}
+                    disabled={activePage === Math.ceil(filteredPosts.length / pageSize)}
+                />
             </Pagination>
-            <EditModal 
-                showEditModal={showEditModal} 
-                handleCloseEditModal={handleCloseEditModal} 
-                handleSubmitEdit={handleSubmitEdit} 
-                handleChangeModal={handleChangeModal} 
-                dataModal={dataModal} 
+            <EditModal
+                showEditModal={showEditModal}
+                handleCloseEditModal={handleCloseEditModal}
+                handleSubmitEdit={handleSubmitEdit}
+                handleChangeModal={handleChangeModal}
+                dataModal={dataModal}
             />
             <DetailsModal
-                showDetailsModal={showDetailsModal} 
+                showDetailsModal={showDetailsModal}
                 handleCloseDetailsModal={handleCloseDetailsModal}
                 dataModal={dataModal}
             />

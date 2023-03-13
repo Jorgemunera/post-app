@@ -5,7 +5,7 @@ const DetailsModal = ({
   showDetailsModal,
   handleCloseDetailsModal,
   dataModal,
- }) => {
+}) => {
 
   return (
     <Modal show={showDetailsModal} onHide={handleCloseDetailsModal}>

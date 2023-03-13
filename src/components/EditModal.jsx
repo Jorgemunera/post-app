@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 const EditModal = ({
   showEditModal,
@@ -27,23 +27,23 @@ const EditModal = ({
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-              <Form.Label>Contenido</Form.Label>
-              <Form.Control 
-                  as="textarea"
-                  name='body'
-                  rows={3}
-                  value={dataModal ? dataModal.body : ''}
-                  onChange={handleChangeModal}
-                  required
-              />
+            <Form.Label>Contenido</Form.Label>
+            <Form.Control
+              as="textarea"
+              name='body'
+              rows={3}
+              value={dataModal ? dataModal.body : ''}
+              onChange={handleChangeModal}
+              required
+            />
           </Form.Group>
           <Modal.Footer>
-              <Button variant="btn btn-secondary" type='button' onClick={handleCloseEditModal}>
-                  Cacelar
-              </Button>
-              <Button variant="btn btn-success" type='submit' onClick={handleCloseEditModal}>
-                  Guardar
-              </Button>
+            <Button variant="btn btn-secondary" type='button' onClick={handleCloseEditModal}>
+              Cacelar
+            </Button>
+            <Button variant="btn btn-success" type='submit' onClick={handleCloseEditModal}>
+              Guardar
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal.Body>

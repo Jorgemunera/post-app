@@ -4,6 +4,7 @@ import { EditModal } from './EditModal';
 import { DetailsModal } from './DetailsModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import '../styles/styleText.css';
 
 const pageSize = 10;
 
@@ -144,7 +145,7 @@ const PostsTable = () => {
     return (
         <Container>
             <InputGroup size="lg" className="mb-3">
-                <InputGroup.Text id="inputGroup-sizing-sm">Busca tu Post🔎</InputGroup.Text>
+                <InputGroup.Text id="inputGroup-sizing-sm" className='style-text'>Busca tu Post🔎</InputGroup.Text>
                 <Form.Control
                     aria-label="Small"
                     aria-describedby="inputGroup-sizing-sm"
@@ -164,7 +165,7 @@ const PostsTable = () => {
                     {paginatedPosts.map(post => (
                         <tr key={post.id}>
                             <td className="text-center align-middle">{post.id}</td>
-                            <td className="text-center align-middle">{post.title}</td>
+                            <td className="text-center align-middle style-text">{post.title}</td>
                             <td className="text-center align-middle">
                                 <button
                                     className="btn btn-secondary btn-sm"

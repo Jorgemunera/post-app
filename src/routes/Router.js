@@ -11,6 +11,7 @@ const Router = () => {
             <Routes>
                 <Route exact path='/' Component={App}/>
                 <Route exact path='/new-post' Component={NewPost}/>
+                <Route exact path='*' Component={App}/>
             </Routes>
         </BrowserRouter>
     );

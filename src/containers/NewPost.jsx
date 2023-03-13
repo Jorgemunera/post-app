@@ -3,6 +3,7 @@ import { Container, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import '../styles/styleText.css';
 
 const NewPost = () => {
 
@@ -53,10 +54,10 @@ const NewPost = () => {
 
     return (
         <Container>
-            <h1 className="text-center mb-4 mt-5">¡ CREA TU POST 🤓!</h1>
+            <h1 className="text-center mb-4 mt-5 style-text">¡ CREA TU POST 🤓!</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
-                    <Form.Label>ID Usuario</Form.Label>
+                    <Form.Label className='style-text'>ID Usuario</Form.Label>
                     <Form.Control
                         type="text"
                         name='userId'
@@ -67,7 +68,7 @@ const NewPost = () => {
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Título</Form.Label>
+                    <Form.Label className='style-text'>Título</Form.Label>
                     <Form.Control
                         type="text"
                         name='title'
@@ -78,7 +79,7 @@ const NewPost = () => {
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Contenido</Form.Label>
+                    <Form.Label className='style-text'>Contenido</Form.Label>
                     <Form.Control
                         as="textarea"
                         name='body'

@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Pagination } from 'react-bootstrap';
 import {EditModal} from './EditModal';
 import {DetailsModal} from './DetailsModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+const pageSize = 10;
+
 const PostsTable = () => {
     const URL = "http://localhost:3004/posts";
-
-    const getPosts = async () => {
-        try {
-            const res = await axios.get(URL);
-            setPosts(res.data);
-        } catch (err) {
-            Swal.fire(
-                '¡Ups!',
-                'Algo salió mal',
-                'error'
-            )
-        }
-    }
-
-    useEffect(() => {
-        getPosts()
-    }, [])
 
     // Estado para guardar y modificar los Posts
     const [posts, setPosts] = useState([]);
@@ -33,6 +18,14 @@ const PostsTable = () => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     // Estado para guardar la informacion del Post seleccionado
     const [dataModal, setDataModal] = useState(null);
+
+    // Estado para detectar la pagina activa y funcion handle para detectar cuando la pagina cambia
+    const [activePage, setActivePage] = useState(1);
+    const handlePageChange = (pageNumber) => {
+        setActivePage(pageNumber);
+    };
+    
+    const paginatedPosts = posts.slice((activePage - 1) * pageSize, activePage * pageSize);
 
     const handleCloseEditModal = () => setShowEditModal(false);
     const handleShowEditModal = () => setShowEditModal(true);
@@ -124,6 +117,23 @@ const PostsTable = () => {
         })
     }
 
+    const getPosts = async () => {
+        try {
+            const res = await axios.get(URL);
+            setPosts(res.data);
+        } catch (err) {
+            Swal.fire(
+                '¡Ups!',
+                'Algo salió mal',
+                'error'
+            )
+        }
+    }
+
+    useEffect(() => {
+        getPosts()
+    }, [])
+
     return (
         <Container>
             <Table striped bordered hover size="sm" responsive>
@@ -135,23 +145,40 @@ const PostsTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {posts.map((post) => (
-                        <tr key={post.id}>
-                            <td className="text-center align-middle">{post.id}</td>
-                            <td className="text-center align-middle title">{post.title}</td>
-                            <td className="text-center align-middle">
-                                <button className='btn btn-info' onClick={() => handleDetails(post)}>Detalles</button>
-                            </td>
-                            <td className="text-center align-middle">
-                                <button className='btn btn-warning' onClick={() => handleEdit(post)}>Editar</button>
-                            </td>
-                            <td className="text-center align-middle">
-                                <button className='btn btn-danger' onClick={() => handleDelete(post)}>Eliminar</button>
-                            </td>
-                        </tr>
-                    ))}
+                {paginatedPosts.map((post) => (
+                    <tr key={post.id}>
+                        <td className="text-center align-middle">{post.id}</td>
+                        <td className="text-center align-middle title">{post.title}</td>
+                        <td className="text-center align-middle">
+                            <button className="btn btn-info" onClick={() => handleDetails(post)}>Detalles</button>
+                        </td>
+                        <td className="text-center align-middle">
+                            <button className="btn btn-warning" onClick={() => handleEdit(post)}>Editar</button>
+                        </td>
+                        <td className="text-center align-middle">
+                            <button className="btn btn-danger" onClick={() => handleDelete(post)}>Eliminar</button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </Table>
+            <Pagination
+                className="justify-content-center"
+                size="sm"
+                onClick={(event) =>
+                handlePageChange(parseInt(event.target.text, 10))
+                }
+            >
+                {[...Array(Math.ceil(posts.length / pageSize))].map((_, index) => (
+                <Pagination.Item
+                    key={index}
+                    active={index + 1 === activePage}
+                    activeLabel=""
+                >
+                    {index + 1}
+                </Pagination.Item>
+                ))}
+            </Pagination>
             <EditModal 
                 showEditModal={showEditModal} 
                 handleCloseEditModal={handleCloseEditModal} 

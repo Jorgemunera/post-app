@@ -1,34 +1,16 @@
 {
-    "Posts": [
-        {
-            "id": 1,
-            "userId": 1,
-            "title": "titulo de post 1",
-            "body": "ljkdfhnsñjklfbnsjñgknsbgjklsnlñjksbnñljksgbnsjklñgbnsñjklgbagñjklsdbgñjklsglkjñfbnasdgkljbnsdglñkjasbnasñljkgbasñgjklabñklsjgbsgñlkjb"
-        },
-        {
-            "id": 2,
-            "userId": 1,
-            "title": "titulo de post 2",
-            "body": "ljkdfhnsñjklfbnsjñgknsbgjklsnlñjksbnñljksgbnsjklñgbnsñjklgbagñjklsdbgñjklsglkjñfbnasdgkljbnsdglñkjasbnasñljkgbasñgjklabñklsjgbsgñlkjb"
-        },
-        {
-            "id": 3,
-            "userId": 1,
-            "title": "titulo de post 3",
-            "body": "ljkdfhnsñjklfbnsjñgknsbgjklsnlñjksbnñljksgbnsjklñgbnsñjklgbagñjklsdbgñjklsglkjñfbnasdgkljbnsdglñkjasbnasñljkgbasñgjklabñklsjgbsgñlkjb"
-        },
-        {
-            "id": 4,
-            "userId": 2,
-            "title": "titulo de post 4",
-            "body": "ljkdfhnsñjklfbnsjñgknsbgjklsnlñjksbnñljksgbnsjklñgbnsñjklgbagñjklsdbgñjklsglkjñfbnasdgkljbnsdglñkjasbnasñljkgbasñgjklabñklsjgbsgñlkjb"
-        },
-        {
-            "id": 5,
-            "userId": 2,
-            "title": "titulo de post 5",
-            "body": "ljkdfhnsñjklfbnsjñgknsbgjklsnlñjksbnñljksgbnsjklñgbnsñjklgbagñjklsdbgñjklsglkjñfbnasdgkljbnsdglñkjasbnasñljkgbasñgjklabñklsjgbsgñlkjb"
-        }
-    ]
+  "Posts": [
+    {
+      "userId": "1",
+      "title": "aaaaaaaa",
+      "body": "aaaaaaaaaaaaa",
+      "id": 14
+    },
+    {
+      "userId": "1",
+      "title": "ssss",
+      "body": "ssssss",
+      "id": 15
+    }
+  ]
 }

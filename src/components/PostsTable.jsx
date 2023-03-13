@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table, Pagination } from 'react-bootstrap';
+import { Container, Table, Pagination, InputGroup, Form } from 'react-bootstrap';
 import { EditModal } from './EditModal';
 import { DetailsModal } from './DetailsModal';
 import axios from 'axios';
@@ -143,8 +143,15 @@ const PostsTable = () => {
 
     return (
         <Container>
-            <input type="text" placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-
+            <InputGroup size="lg" className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-sm">Busca tu Post🔎</InputGroup.Text>
+                <Form.Control
+                    aria-label="Small"
+                    aria-describedby="inputGroup-sizing-sm"
+                    onChange ={(e) => setSearchTerm(e.target.value)} 
+                    value={searchTerm}
+                />
+            </InputGroup>
             <Table striped bordered hover size="sm" responsive>
                 <thead>
                     <tr>

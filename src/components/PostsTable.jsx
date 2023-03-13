@@ -11,10 +11,49 @@ const PostsTable = () => {
     // Estado para ocultar o mostrar el Modal
     const [showModal, setShowModal] = useState(false);
     // Estado para guardar la informacion del Post seleccionado
-    const [selectedPost, setSelectedPost] = useState(null);
+    const [dataModal, setDataModal] = useState(null);
 
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
+
+    const handleChangeModal = ({target}) => {
+        console.log(target)
+        setDataModal({
+            ...dataModal,
+            [target.name]: target.value
+        })
+    }
+
+    // Una vez abierto el Modal, cuando se da en "guardar" se hace la peticion put a la API y se actualiza 
+    const handleSubmitEdit = async (e) => {
+        e.preventDefault();
+        const res = await axios.patch(`${URL}/${dataModal.id}`, dataModal);
+        if (res.status === 200) {
+          Swal.fire(
+            'Guardado!',
+            `El post ${res.data.title} ha sido actualizado exitosamente!`,
+            'success'
+          );
+          // Buscar el post en el estado `posts` y actualizarlo
+          setPosts(posts.map(post => {
+            if (post.id === dataModal.id) {
+              return {
+                ...post,
+                ...dataModal
+              };
+            }
+            return post;
+          }));
+          handleCloseModal();
+        } else {
+          Swal.fire(
+            'Error!',
+            'Hubo un problema al actualizar el post!',
+            'error'
+          );
+        }
+      };
+      
 
     const getPosts = async () => {
         try {
@@ -31,7 +70,7 @@ const PostsTable = () => {
 
     useEffect(() => {
         getPosts()
-    }, [posts])
+    }, [])
 
     // Función de eliminar POST, esta reacciona al evento de click del botón eliminar
     const handleDelete = async (post) => {
@@ -68,10 +107,11 @@ const PostsTable = () => {
         })
     }
 
-    // Función de editar POST, esta actualiza la informacion del estado con los datos del post seleccionado
+    // Función de editar POST, esta actualiza la informacion del estado con los datos del post seleccionado y se abre el Modal
     const handleEdit = (post) => {
-        setSelectedPost(post);
+        setDataModal(post);
         handleShowModal();
+        console.log(post)
     }
 
     return (
@@ -107,21 +147,27 @@ const PostsTable = () => {
                     <Modal.Title>Editar Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmitEdit}>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Titulo</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={selectedPost ? selectedPost.title : ''}
+                                name='title'
+                                value={dataModal ? dataModal.title : ''}
                                 autoFocus
+                                onChange={handleChangeModal}
+                                required
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Contenido</Form.Label>
                             <Form.Control 
-                                as="textarea" 
+                                as="textarea"
+                                name='body'
                                 rows={3}
-                                value={selectedPost ? selectedPost.body : ''}
+                                value={dataModal ? dataModal.body : ''}
+                                onChange={handleChangeModal}
+                                required
                             />
                         </Form.Group>
                         <Modal.Footer>

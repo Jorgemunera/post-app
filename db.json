@@ -2,7 +2,7 @@
   "Posts": [
     {
       "userId": "1",
-      "title": "aaaaaaaa",
+      "title": "araña",
       "body": "aaaaaaaaaaaaa",
       "id": 14
     },
@@ -11,6 +11,12 @@
       "title": "ssss",
       "body": "ssssss",
       "id": 15
+    },
+    {
+      "userId": "1",
+      "title": "pantalon",
+      "body": "rojo",
+      "id": 16
     }
   ]
 }

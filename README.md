@@ -34,9 +34,11 @@ A continuación se presenta el proyecto de POST-APP, esta es una aplicación en 
 ![responsive](https://raw.githubusercontent.com/Jorgemunera/post-app/main/assets/responsive.png)
  
  
-## Estructura de carpetas
+## Estructura de Carpetas
 La estructura de carpetas que se define es una basada en atomic design en donde se trata de identificar cada uno de los elementos que sigue este modelo de diseño, como se muestra a continuación:
+
 ![folders](https://raw.githubusercontent.com/Jorgemunera/post-app/main/assets/folders.png)
+
 
 
 ## Funcionalidad

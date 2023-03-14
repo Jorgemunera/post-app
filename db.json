@@ -2,69 +2,27 @@
   "Posts": [
     {
       "userId": "1",
-      "title": "arañasaaayhhfgg",
-      "body": "aaaaaaaaaaaaa",
-      "id": 14
+      "title": "title 1",
+      "body": "contenido 1",
+      "id": 1
     },
     {
       "userId": "1",
-      "title": "pantalon",
-      "body": "rojo",
-      "id": 16
+      "title": "title 2",
+      "body": "contenido 2",
+      "id": 2
     },
     {
-      "userId": "1",
-      "title": "1",
-      "body": "1",
-      "id": 26
+      "userId": "2",
+      "title": "title 3",
+      "body": "contenido 3",
+      "id": 3
     },
     {
-      "userId": "1",
-      "title": "dddssssssssssssssqqqqqqqqqqqqqqqqqq",
-      "body": "a",
-      "id": 28
-    },
-    {
-      "userId": "12",
-      "title": "gdsfgsdfgs",
-      "body": "dfsghdshsdhsdh",
-      "id": 29
-    },
-    {
-      "userId": "444",
-      "title": "dfhdhds",
-      "body": "dfhsdfhsdhsdfh",
-      "id": 30
-    },
-    {
-      "userId": "5",
-      "title": "hgjfdjfdj",
-      "body": "fjdfjdfj",
-      "id": 31
-    },
-    {
-      "userId": "5",
-      "title": "fgjfdj",
-      "body": "fgjdfjfdjf",
-      "id": 32
-    },
-    {
-      "userId": "7",
-      "title": "hgghhg",
-      "body": "kdkdfjfkdfk",
-      "id": 33
-    },
-    {
-      "userId": "7",
-      "title": "fgjhdfj",
-      "body": "dfgjfgjdfj",
-      "id": 34
-    },
-    {
-      "userId": "5",
-      "title": "ghhdfj",
-      "body": "fgjdfgjdfj",
-      "id": 35
+      "userId": "2",
+      "title": "title 4",
+      "body": "contenido 4",
+      "id": 4
     }
   ]
 }

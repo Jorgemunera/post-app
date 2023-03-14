@@ -7,7 +7,7 @@ const useEditModal = () => {
   const handleCloseEditModal = () => setShowEditModal(false);
   const handleShowEditModal = () => setShowEditModal(true);
 
-    return [showEditModal, handleCloseEditModal, handleShowEditModal]
+  return [showEditModal, handleCloseEditModal, handleShowEditModal]
 }
 
 export { useEditModal }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const URL = "http://localhost:3004/posts";
+const URL = "https://jsonplaceholder.typicode.com/posts";
 
 const usePosts = () => {
   // Estado para guardar y modificar los Posts
@@ -28,4 +28,4 @@ const usePosts = () => {
   return [posts, setPosts];
 };
 
-export {usePosts}
+export { usePosts }

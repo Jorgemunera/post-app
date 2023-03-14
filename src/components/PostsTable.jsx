@@ -14,7 +14,7 @@ import { usePosts } from '../hooks/usePosts';
 const pageSize = 10;
 
 const PostsTable = () => {
-    const URL = "http://localhost:3004/posts";
+    const URL = "https://jsonplaceholder.typicode.com/posts";
     // Custom Hooks utilizados
     const [posts, setPosts] = usePosts();
     const [filteredPosts, searchTerm, setSearchTerm] = useSearch(posts);

@@ -17,4 +17,4 @@ const useSearch = (data) => {
   return [filteredData, searchTerm, setSearchTerm];
 };
 
-export {useSearch};
+export { useSearch };

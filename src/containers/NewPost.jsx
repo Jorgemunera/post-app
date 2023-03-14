@@ -22,7 +22,7 @@ const NewPost = () => {
     }
 
     // Petición POST con axios cuando ocurre el evento onSubmit del formulario (click en botón crear)
-    const URL = "http://localhost:3004/posts"
+    const URL = "https://jsonplaceholder.typicode.com/posts"
 
     const handleSubmit = async (e) => {
         try {

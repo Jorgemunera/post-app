@@ -1,20 +1,20 @@
 import React from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NavBar } from '../components/NavBar';
-import {App} from '../containers/App';
+import { App } from '../containers/App';
 import { NewPost } from '../containers/NewPost';
 
 const Router = () => {
     return (
         <BrowserRouter>
-        <NavBar/>
+            <NavBar />
             <Routes>
-                <Route exact path='/' Component={App}/>
-                <Route exact path='/new-post' Component={NewPost}/>
-                <Route exact path='*' Component={App}/>
+                <Route exact path='/' Component={App} />
+                <Route exact path='/new-post' Component={NewPost} />
+                <Route exact path='*' Component={App} />
             </Routes>
         </BrowserRouter>
     );
 }
 
-export {Router}
+export { Router }

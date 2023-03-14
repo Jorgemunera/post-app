@@ -10,4 +10,4 @@ const usePagination = (data, pageSize) => {
   return [paginatedPosts, activePage, setActivePage];
 };
 
-export {usePagination};
+export { usePagination };

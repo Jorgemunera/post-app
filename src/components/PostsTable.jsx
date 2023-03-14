@@ -1,42 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Table, Pagination, InputGroup, Form } from 'react-bootstrap';
-import { EditModal } from './EditModal';
-import { DetailsModal } from './DetailsModal';
+import '../styles/styleText.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import '../styles/styleText.css';
+import { EditModal } from './EditModal';
+import { DetailsModal } from './DetailsModal';
+import { usePagination } from '../hooks/usePagination';
+import { useSearch } from '../hooks/useSearch';
+import { useDetailsModal } from '../hooks/useDetailsModal';
+import { useEditModal } from '../hooks/useEditModal';
+import { usePosts } from '../hooks/usePosts';
 
 const pageSize = 10;
 
 const PostsTable = () => {
     const URL = "http://localhost:3004/posts";
+    // Custom Hooks utilizados
+    const [posts, setPosts] = usePosts();
+    const [filteredPosts, searchTerm, setSearchTerm] = useSearch(posts);
+    const [paginatedPosts, activePage, setActivePage] = usePagination(filteredPosts, pageSize || 10);
+    const [showDetailsModal, handleCloseDetailsModal, handleShowDetailsModal] = useDetailsModal();
+    const [showEditModal, handleCloseEditModal, handleShowEditModal] = useEditModal();
 
-    // Estado para guardar y modificar los Posts
-    const [posts, setPosts] = useState([]);
-    // Estado para ocultar o mostrar el EditModal
-    const [showEditModal, setShowEditModal] = useState(false);
-    // Estado para ocultar o mostrar el DetailsModal
-    const [showDetailsModal, setShowDetailsModal] = useState(false);
     // Estado para guardar la informacion del Post seleccionado
     const [dataModal, setDataModal] = useState(null);
-    // Estado para manejar los terminos de busqueda
-    const [searchTerm, setSearchTerm] = useState("");
 
-    // Estado para detectar la pagina activa y funcion handle para detectar cuando la pagina cambia
-    const [activePage, setActivePage] = useState(1);
-
-    const filteredPosts = posts.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const paginatedPosts = filteredPosts.slice((activePage - 1) * pageSize, activePage * pageSize);
-
-    const handleCloseEditModal = () => setShowEditModal(false);
-    const handleShowEditModal = () => setShowEditModal(true);
-
-    const handleCloseDetailsModal = () => setShowDetailsModal(false);
-    const handleShowDetailsModal = () => setShowDetailsModal(true);
-
+    // Función que actualiza dependiendo de la informacion del post seleccionado
     const handleChangeModal = ({ target }) => {
         setDataModal({
             ...dataModal,
@@ -121,27 +110,6 @@ const PostsTable = () => {
         })
     }
 
-    useEffect(() => {
-        setActivePage(1);
-    }, [searchTerm]);
-
-    const getPosts = async () => {
-        try {
-            const res = await axios.get(URL);
-            setPosts(res.data);
-        } catch (err) {
-            Swal.fire(
-                '¡Ups!',
-                'Algo salió mal',
-                'error'
-            )
-        }
-    }
-
-    useEffect(() => {
-        getPosts()
-    }, [])
-
     return (
         <Container>
             <InputGroup size="lg" className="mb-3">
@@ -149,7 +117,7 @@ const PostsTable = () => {
                 <Form.Control
                     aria-label="Small"
                     aria-describedby="inputGroup-sizing-sm"
-                    onChange ={(e) => setSearchTerm(e.target.value)} 
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     value={searchTerm}
                 />
             </InputGroup>
